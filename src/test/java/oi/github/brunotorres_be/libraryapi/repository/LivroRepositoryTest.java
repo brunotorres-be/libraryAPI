@@ -27,16 +27,16 @@ class LivroRepositoryTest {
     @Test
     void salvarTest(){
         Livro livro = new Livro();
-        livro.setIsbn("98887-84874");
+        livro.setIsbn("58587-84874");
         livro.setPreco(BigDecimal.valueOf(100));
-        livro.setGenero(GeneroLivro.FICCAO);
-        livro.setTitulo("Outro Livro");
+        livro.setGenero(GeneroLivro.CIENCIA);
+        livro.setTitulo("Terra");
         livro.setDataPublicacao(LocalDate.of(1980,11,30));
 
         Autor autor = autorRepository.findById(UUID.fromString("e6a628d6-9cb4-4262-826d-f841ec191131")).orElse(null);
 
 
-        livro.setAutor(autor);
+        //livro.setAutor(autor);
 
         repository.save(livro);
     }
@@ -45,10 +45,10 @@ class LivroRepositoryTest {
     @Test
     void salvarAutorELibroTest(){
         Livro livro = new Livro();
-        livro.setIsbn("98887-84874");
+        livro.setIsbn("98857-84874");
         livro.setPreco(BigDecimal.valueOf(100));
-        livro.setGenero(GeneroLivro.FICCAO);
-        livro.setTitulo("terceiro Livro");
+        livro.setGenero(GeneroLivro.CIENCIA);
+        livro.setTitulo("Terra2");
         livro.setDataPublicacao(LocalDate.of(1980,11,30));
 
         Autor autor = new Autor();
@@ -58,7 +58,7 @@ class LivroRepositoryTest {
 
         autorRepository.save(autor);
 
-        livro.setAutor(autor);
+       livro.setAutor(autor);
 
         repository.save(livro);
     }
@@ -146,4 +146,52 @@ class LivroRepositoryTest {
         List<Livro> lista = repository.findByTituloOrIsbn(tituloPesquisa,isbnPesquisa);
         lista.forEach(System.out::println);
     }
+
+    @Test
+    void listarLivrosComQueryJPQL(){
+        var resultado = repository.listarTodosOrdenadoPorTituloAndPreco();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarAutorDosLivros(){
+        var resultado = repository.listarAutorDosLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarTitulosNãoRepetidosLivros(){
+        var resultado = repository.listarNomesDiferentesLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarGenerosDeLivrosAutoresBrasileiros(){
+        var resultado = repository.listarGenerosAutoresBrasileiros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarPorGeneroQueryParamTest(){
+        var resultado = repository.findByGenero(GeneroLivro.FICCAO, "dataPublicacao");
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarPorPositionalParamTest(){
+        var resultado = repository.findByPositionalParameters(GeneroLivro.FICCAO, "dataPublicacao");
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void deletePorGeneroTest(){
+        repository.deleteByGenero(GeneroLivro.CIENCIA);
+    }
+
+    @Test
+    void updateDataPublicacaoTeste(){
+        repository.updateDataPublicacao(LocalDate.of(2000,1,10));
+    }
+
+
 }
