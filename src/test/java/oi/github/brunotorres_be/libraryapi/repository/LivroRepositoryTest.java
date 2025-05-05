@@ -27,16 +27,16 @@ class LivroRepositoryTest {
     @Test
     void salvarTest(){
         Livro livro = new Livro();
-        livro.setIsbn("58587-84874");
+        livro.setIsbn("585237-84874");
         livro.setPreco(BigDecimal.valueOf(100));
         livro.setGenero(GeneroLivro.CIENCIA);
-        livro.setTitulo("Terra");
-        livro.setDataPublicacao(LocalDate.of(1980,11,30));
+        livro.setTitulo("Agua");
+        livro.setDataPublicacao(LocalDate.of(1990,11,30));
 
-        Autor autor = autorRepository.findById(UUID.fromString("e6a628d6-9cb4-4262-826d-f841ec191131")).orElse(null);
+        Autor autor = autorRepository.findById(UUID.fromString("0c9fa38f-64fb-4c52-ab1d-1841218a624a")).orElse(null);
 
 
-        //livro.setAutor(autor);
+        livro.setAutor(autor);
 
         repository.save(livro);
     }
