@@ -3,15 +3,20 @@ package oi.github.brunotorres_be.libraryapi.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "livro")
 @Data
 @ToString(exclude = "autor")
+@EntityListeners(AuditingEntityListener.class)
 public class Livro {
 
     @Id
@@ -41,4 +46,16 @@ public class Livro {
     )
     @JoinColumn(name = "id.autor")
     private Autor autor;
+
+    @CreatedDate //toda vez que for persistir vai ser colocada a data e hora do momento da persistencia
+    @Column(name = "data_cadastro")
+    private LocalDateTime dataCadastro;
+
+    @LastModifiedDate //ultima data feita o update
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
+
+    @Column(name = "id_usuario")
+    private UUID idUsuario;
+}
 }

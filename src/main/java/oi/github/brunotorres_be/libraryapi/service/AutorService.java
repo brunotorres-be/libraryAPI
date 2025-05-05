@@ -6,6 +6,8 @@ import oi.github.brunotorres_be.libraryapi.model.Autor;
 import oi.github.brunotorres_be.libraryapi.repository.AutorRepository;
 import oi.github.brunotorres_be.libraryapi.repository.LivroRepository;
 import oi.github.brunotorres_be.libraryapi.validator.AutorValidator;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +71,22 @@ public class AutorService {
 
             return repository.findAll();
 
+        }
+
+        public List<Autor> pesquisaByExample (String nome, String nacionalidade){
+            var autor = new Autor();
+            autor.setNome(nome);
+            autor.setNacionalidade(nacionalidade);
+
+            ExampleMatcher matcher = ExampleMatcher.
+                    matching()
+                    .withIgnoreNullValues()
+                    .withIgnoreCase()
+                    .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+            Example<Autor> autorExample = Example.of(autor,matcher);
+
+            return repository.findAll(autorExample);
         }
 
         public boolean possuiLivro (Autor autor) {

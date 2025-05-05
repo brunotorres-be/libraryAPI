@@ -1,5 +1,6 @@
 package oi.github.brunotorres_be.libraryapi.controller;
 
+import jakarta.validation.Valid;
 import oi.github.brunotorres_be.libraryapi.controller.dto.AutorDTO;
 import oi.github.brunotorres_be.libraryapi.controller.dto.ErroResposta;
 import oi.github.brunotorres_be.libraryapi.exceptions.OperacaoNaoPermitidaException;
@@ -29,7 +30,7 @@ public class AutorController {
     }
 
     @PostMapping
-    public ResponseEntity <Object> salvar(@RequestBody AutorDTO autor){
+    public ResponseEntity <Object> salvar(@RequestBody @Valid AutorDTO autor){ //o @valid vai verificar se todas as validacoes do AutorDTO estao certas para poder liberar.
         try {
 
 
@@ -91,7 +92,7 @@ public class AutorController {
     public ResponseEntity<List<AutorDTO>> pesquisar(
         @RequestParam(value = "nome", required = false) String nome,
         @RequestParam(value = "nacionalidade", required = false) String nacionalidade){
-        List<Autor> resultado = service.pesquisa(nome, nacionalidade);
+        List<Autor> resultado = service.pesquisaByExample(nome, nacionalidade);
         List<AutorDTO> lista = resultado
                 .stream()
                 .map(autor -> new AutorDTO(
@@ -107,7 +108,7 @@ public class AutorController {
 
     @PutMapping ("{id}")
     public ResponseEntity<Object> atualizar(
-            @PathVariable("id") String id,@RequestBody AutorDTO dto){
+            @PathVariable("id") String id,@RequestBody @Valid AutorDTO dto){
 
         try {
             var idAutor = UUID.fromString(id);
