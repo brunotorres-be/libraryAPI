@@ -4,6 +4,7 @@ import oi.github.brunotorres_be.libraryapi.model.Autor;
 import oi.github.brunotorres_be.libraryapi.model.GeneroLivro;
 import oi.github.brunotorres_be.libraryapi.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public interface LivroRepository extends JpaRepository<Livro, UUID> {
+public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecificationExecutor<Livro> {
 
 
     // Query Method
@@ -79,4 +80,7 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
     void updateDataPublicacao(LocalDate novaData);
 
     public boolean existsByAutor (Autor autor);
+
+
+
 }
